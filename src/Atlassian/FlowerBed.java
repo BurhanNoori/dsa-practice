@@ -11,7 +11,7 @@ package Atlassian;
 public class FlowerBed {
     public boolean canPlaceFlower (int[] flowerbed, int n) {
         /*
-        * We do not want any flower beds one place ahead of our current index and one place behind our index.
+        * We do not want any flower one place ahead of our current index and one place behind our index.
         * So check for that while traversing the array.
         * We only replace 0 values so putting all the rules on indexes having values 0.
         * Also our n should always be greater than 0
@@ -22,10 +22,11 @@ public class FlowerBed {
             if (flowerbed[i] == 0 && n > 0) {
                 //Case 1. First element
                 if (i==0) {
+                    //first and only
                     if (i+1 == flowerbed.length) {
                         flowerbed[i] = 1;
                         n--;
-                    } else if (flowerbed[i+1] == 0) {
+                    } else if (flowerbed[i+1] == 0) { //First and not only
                         flowerbed[i] = 1;
                         n--;
                     }

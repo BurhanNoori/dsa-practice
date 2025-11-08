@@ -16,6 +16,9 @@ import java.util.Set;
 * the getMin() and getMax() in O(1), as we have min and max dummy nodes and the nodes connected to these nodes
 * will have min and max freq. As the operations like insertion and deletion shifts the key by one step so it is
 * easy to achieve using linkedlist in O(1).
+*
+* Follow up questions?
+* Why are you removing the empty nodes? If not removing the empty nodes we would get the empty nodes as min or max
 * */
 
 public class AllOne {
@@ -23,8 +26,8 @@ public class AllOne {
     private class Node {
         int freq; //Frequency of the keys
         Set<String> keys; //Set of keys with same freq
-        Node next; //Node next to max value
-        Node prev; //Node next to min value
+        Node next; //Node next to this node
+        Node prev; //Node prev to this node
 
         public Node(int freq) {
             this.freq = freq;
@@ -55,7 +58,7 @@ public class AllOne {
             Node curr = keyStore.get(key);
             curr.keys.remove(key);
             keyStore.remove(key);
-            /* Always remove the curr node at last otherwise you would lose the ref of curr.next and curr.prev
+            /* Always remove the curr node from doubley linked list at last otherwise you would lose the ref of curr.next and curr.prev
             and curr.next and curr.prev would be null
             if (curr.keys.isEmpty()) {
                 remove(curr);
@@ -71,7 +74,7 @@ public class AllOne {
             } else {
                 //add the new node here
                 Node newNode = new Node(curr.freq + 1);
-                addRight(curr, newNode); // <--- missing
+                addRight(curr, newNode);
                 newNode.keys.add(key);
                 keyStore.put(key, newNode);
             }
@@ -108,33 +111,32 @@ public class AllOne {
             return;
 
         //Key exist
-        Node node = keyStore.get(key);
+        Node curr = keyStore.get(key);
 
         //The existing node has either freq 1 or more, any ways we have to remove the key from the
         //existing node and keystore in both the cases
         //Remove the key from the node and keyStore
         keyStore.remove(key);
-        node.keys.remove(key);
-
-
+        curr.keys.remove(key);
 
         //freq > 1 and Either prev node exist or not
-        //if exist add the node to the prev node
-        if (node.prev.freq == node.freq - 1) {
-            node.prev.keys.add(key);
-            keyStore.put(key, node.prev);
-        } else {
-            //Create the node and add it to the right of prev node.
-            Node newNode = new Node(node.freq - 1);
-            addRight(node.prev, newNode);
-            newNode.keys.add(key);
-            keyStore.put(key, newNode);
+        if (curr.freq > 1) {
+            // if the prev node exist
+            if (curr.prev != null && curr.prev.freq == curr.freq - 1) {
+                curr.prev.keys.add(key);
+                keyStore.put(key, curr.prev);
+            } else {
+                Node prevNode = new Node(curr.freq - 1);
+                addRight(curr.prev, prevNode);
+                prevNode.keys.add(key);
+                keyStore.put(key, prevNode);
+            }
         }
 
         //If freq was 1, after removing key
         //If we keep the node without keys in it will give empty set on getMin, better to remove it
-        if (node.keys.isEmpty()) {
-            remove(node);
+        if (curr.keys.isEmpty()) {
+            remove(curr);
         }
     }
 

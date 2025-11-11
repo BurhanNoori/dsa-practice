@@ -140,7 +140,7 @@ public class AllOne {
         }
     }
 
-    private void remove(Node node) {
+    private void remove(Node node)  {
         node.prev.next = node.next;
         node.next.prev = node.prev;
     }

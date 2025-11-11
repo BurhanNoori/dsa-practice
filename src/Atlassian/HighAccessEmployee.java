@@ -73,7 +73,7 @@ public class HighAccessEmployee {
                     .add(toMinute(time));
         }
 
-        accessInfo.forEach((k,v)->{
+        accessInfo.forEach((k,v) -> {
             Collections.sort(v);
             for (int i=2; i < v.size(); i++) {
                 if (v.get(i) - v.get(i-2) < 60) {

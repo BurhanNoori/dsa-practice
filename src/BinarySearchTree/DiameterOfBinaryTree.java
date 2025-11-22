@@ -33,7 +33,15 @@ public class DiameterOfBinaryTree {
         int leftHeight = height(root.left);
         int rightHeight = height(root.right);
 
-        diameter = Math.max(diameter, leftHeight + rightHeight + 1);
+        diameter = Math.max(diameter, leftHeight + rightHeight); //diameter is the no. of edges not nodes untill mentioned
+        /*
+                       1
+                      / \
+                     2   3        Diameter is 3 not 4.
+                    /
+                   4
+
+         */
         return 1 + Math.max(leftHeight, rightHeight);
     }
 
@@ -45,7 +53,10 @@ public class DiameterOfBinaryTree {
      *
      * */
     public int getDiameter2 (TreeNode root) {
-
+        /*
+        This approach is not efficient because each getDiameter call also calls height which is
+        O(n). So the total time complexity is O(n^2)
+         */
         if (root == null) return 0;
 
         int leftDia = getDiameter2(root.left);

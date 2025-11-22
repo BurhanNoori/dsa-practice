@@ -31,7 +31,7 @@ public class MinHeap {
         heap.set(j, temp);
     }
 
-    public peek() {
+    public int peek() {
         return heap.get(0);
     }
 

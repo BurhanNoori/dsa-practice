@@ -1,5 +1,6 @@
 package Atlassian;
 
+import java.util.Arrays;
 import java.util.PriorityQueue;
 
 /**
@@ -24,12 +25,13 @@ Constraints:
 public class MeetingRoomsII {
 
     public int minMeetingRooms(int[][] intervals) {
+        Arrays.sort(intervals, (a, b)->a[0]-b[0]);
         //Min heap who has the rooms with meeting end time only.
         PriorityQueue<Integer> rooms = new PriorityQueue<>();
 
         for (int i = 0; i < intervals.length; i++) {
 
-            if (!rooms.isEmpty() && rooms.peek() <= intervals[i][1]) {
+            if (!rooms.isEmpty() && rooms.peek() <= intervals[i][0]) {
                 //It means re-use we can use the room available at the root of the heap
                 //So replace the room with this meeting interval data
                 rooms.poll();
@@ -41,7 +43,7 @@ public class MeetingRoomsII {
         return rooms.size();
     }
     /*
-    reuse room - means remove the odd entry and add new entry, simply replacing the room with new meeting data (poll() + offer())
+    reuse room - means remove the old entry and add new entry, simply replacing the room with new meeting data (poll() + offer())
     can't reuse room - means a new room to be added (offer()) only
      */
 
